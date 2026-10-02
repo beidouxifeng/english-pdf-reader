@@ -396,6 +396,13 @@ $("fit").onclick = function () {
 $("vb").onclick = function () { side.hidden = !side.hidden; };
 $("sc").onclick = function () { side.hidden = true; };
 $("ex").onclick = exportCSV;
+$("nat").onclick = function () {
+  try {
+    chrome.mimeHandler.abortAndFallbackToNativeHandler();
+  } catch (e) {
+    alert("切换失败:" + (e && e.message ? e.message : e));
+  }
+};
 
 (async function () {
   try {
