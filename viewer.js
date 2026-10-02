@@ -393,8 +393,16 @@ $("zi2").onclick = function () { setZoom(zoom * 1.15); };
 $("fit").onclick = function () {
   zoom = 1; fitScale = computeFit(); updateZoomUI(); build();
 };
-$("vb").onclick = function () { side.hidden = !side.hidden; };
-$("sc").onclick = function () { side.hidden = true; };
+var sideTimer = null;
+function openSide() { clearTimeout(sideTimer); side.hidden = false; }
+function closeSide() {
+  clearTimeout(sideTimer);
+  sideTimer = setTimeout(function () { side.hidden = true; }, 250);
+}
+$("vb").addEventListener("mouseenter", openSide);
+$("vb").addEventListener("mouseleave", closeSide);
+side.addEventListener("mouseenter", function () { clearTimeout(sideTimer); });
+side.addEventListener("mouseleave", closeSide);
 $("ex").onclick = exportCSV;
 $("nat").onclick = function () {
   try {
