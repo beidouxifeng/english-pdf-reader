@@ -7,6 +7,7 @@ button{font:inherit;color:var(--tx);background:#fff;border:1px solid var(--bd);b
 button:hover{background:#f0f0f0}
 #fn{color:var(--mu);font-size:13px;max-width:360px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-left:4px}
 .sp{flex:1}
+.sep{width:1px;height:18px;background:var(--bd);flex:0 0 auto;margin:0 6px}
 #zi{color:var(--mu);min-width:52px;text-align:center;font-size:13px}
 main{flex:1;display:flex;min-height:0;position:relative}
 #viewer{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;align-items:center;gap:16px;position:relative}

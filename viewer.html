@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>英语阅读器</title>
+<title>英文PDF阅读器</title>
 <link rel="stylesheet" href="viewer.css">
 </head>
 <body>
@@ -13,13 +13,14 @@
 <button id="zo">−</button><span id="zi">100%</span><button id="zi2">+</button>
 <button id="fit">适应宽度</button>
 <span id="pi">1 / 1</span>
-<button id="nat" title="退出扩展，用 Chrome 自带的查看器打开当前文件。">退出扩展</button>
 <button id="vb">生词本 <span id="vc">0</span></button>
+<span class="sep"></span>
+<button id="nat" title="退出扩展，改用 Chrome 自带的查看器打开当前文件">退出扩展</button>
 </header>
 <main>
 <div id="viewer"><div id="empty">正在载入 PDF…</div></div>
 <aside id="side" hidden>
-<div class="sh"><b>生词本</b><span class="sp"></span><button id="ex">导出 CSV</button><button id="sc">×</button></div>
+<div class="sh"><b>生词本</b><span class="sp"></span><button id="ex">导出 Excel</button></div>
 <ul id="vl"></ul>
 </aside>
 </main>

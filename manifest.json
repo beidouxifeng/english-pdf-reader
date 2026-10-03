@@ -1,14 +1,18 @@
 {
   "manifest_version": 3,
-  "name": "英语阅读器",
+  "name": "英文PDF阅读器",
   "version": "1.0.0",
   "description": "在 PDF 上划词查词并记录生词,内置离线英汉词典",
+  "action": {},
   "mime_types_handler": {
     "application/pdf": {
       "handler_url": "viewer.html",
       "can_embed": true
     }
   },
-  "permissions": ["storage"],
-  "host_permissions": ["https://api.mymemory.translated.net/*"]
+  "permissions": ["storage", "tabs"],
+  "host_permissions": ["https://api.mymemory.translated.net/*"],
+  "background": {
+    "service_worker": "sw.js"
+  }
 }
