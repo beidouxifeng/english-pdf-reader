@@ -10,7 +10,7 @@
       "can_embed": true
     }
   },
-  "permissions": ["tabs"],
+  "permissions": ["storage", "tabs"],
   "host_permissions": ["https://api.mymemory.translated.net/*"],
   "background": {
     "service_worker": "sw.js"

@@ -67,19 +67,34 @@ function lookup(word) {
   return null;
 }
 
-var vocab = [];
+var vocab = [], storageBroken = false;
+
+function hasStorage() {
+  return typeof chrome !== "undefined" && !!(chrome.storage && chrome.storage.local);
+}
+
+function storageErr(e) {
+  if (!storageBroken) console.error("生词存储不可用:", e || 'chrome.storage 未定义(manifest.json 缺少 "storage" 权限)');
+  storageBroken = true;
+}
+
 function loadVocab() {
+  if (!hasStorage()) { storageErr(); renderVocab(); return Promise.resolve(); }
   return chrome.storage.local.get("vocab").then(function (r) {
     vocab = (r && r.vocab) || [];
     renderVocab();
-  }).catch(function () { renderVocab(); });
+  }).catch(function (e) { storageErr(e); renderVocab(); });
 }
-function saveVocab() { return chrome.storage.local.set({ vocab: vocab }); }
+function saveVocab() {
+  if (!hasStorage()) return Promise.reject(new Error('chrome.storage 不可用(manifest.json 缺少 "storage" 权限)'));
+  return chrome.storage.local.set({ vocab: vocab }).catch(function (e) { storageErr(e); throw e; });
+}
 
 function renderVocab() {
   $("vc").textContent = vocab.length;
-  if (!vocab.length) { vl.innerHTML = '<div id="vemp">还没有生词</div>'; return; }
-  vl.innerHTML = vocab.slice().reverse().map(function (v, i) {
+  var warn = storageBroken ? '<div id="vemp">本地存储不可用，生词无法保存或读取。请检查 manifest.json 是否声明了 "storage" 权限，再重新加载扩展。</div>' : "";
+  if (!vocab.length) { vl.innerHTML = warn || '<div id="vemp">还没有生词</div>'; return; }
+  vl.innerHTML = warn + vocab.slice().reverse().map(function (v, i) {
     var idx = vocab.length - 1 - i;
     var long = /\s/.test(v.w) || v.w.length > 24;
     var src = [v.f, v.m].filter(function (x) { return !!x; }).join(" · ");
@@ -181,9 +196,7 @@ function showPop(text, rect, page) {
 
   if (isWord) {
     $("pw").onclick = function () {
-      var st = $("ps");
-      addVocab(hit ? hit.key : text, hit ? hit.e[0] : "", hit ? hit.e[1] : "", "p." + page)
-        .then(function (ok) { st.textContent = ok ? "已加入" : "已存在"; });
+      addVocab(hit ? hit.key : text, hit ? hit.e[0] : "", hit ? hit.e[1] : "", "p." + page).then(setSt);
     };
   } else {
     var trans = null;
@@ -197,9 +210,7 @@ function showPop(text, rect, page) {
     $("pw").onclick = function () {
       var st = $("ps");
       function put() {
-        addVocab(text, "", trans, "p." + page).then(function (ok) {
-          st.textContent = ok ? "已加入" : "已存在";
-        });
+        addVocab(text, "", trans, "p." + page).then(setSt);
       }
       if (trans) return put();
       st.textContent = "翻译中…";
