@@ -6,8 +6,8 @@
   var query = "";
 
   var $ = function (id) { return document.getElementById(id); };
-  var list = $("list"), stat = $("stat"), empty = $("empty");
-  var tpl = $("card");
+  var list = $("list"), stat = $("stat"), empty = $("empty"), headRow = $("head");
+  var tpl = $("row");
 
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
@@ -56,6 +56,7 @@
     if (!vocab.length) {
       stat.innerHTML = "";
       list.innerHTML = "";
+      headRow.hidden = true;
       empty.hidden = false;
       empty.textContent = "生词本还是空的。在阅读器里划选单词或句子，即可收录。";
       return;
@@ -64,12 +65,14 @@
     if (!rows.length) {
       stat.innerHTML = "共 <b>" + vocab.length + "</b> 条";
       list.innerHTML = "";
+      headRow.hidden = true;
       empty.hidden = false;
       empty.textContent = "没有匹配的条目。";
       return;
     }
 
     empty.hidden = true;
+    headRow.hidden = false;
     stat.innerHTML = "共 <b>" + vocab.length + "</b> 条 · 单词 <b>" + words +
       "</b> · 句子 <b>" + sents + "</b>" +
       (rows.length !== vocab.length ? " · 当前显示 <b>" + rows.length + "</b> 条" : "");
@@ -87,18 +90,24 @@
       kind.textContent = sent ? "句子" : "单词";
       if (sent) kind.classList.add("sent");
 
+      var w = node.querySelector(".w");
+      w.textContent = v.w;
+      w.title = v.w;
+      if (sent) w.classList.add("sent");
+
+      var phon = node.querySelector(".phon");
+      phon.textContent = v.p ? "/" + v.p + "/" : "";
+
+      var tr = node.querySelector(".tr");
+      tr.textContent = v.t || "";
+      tr.title = v.t || "";
+
       var from = node.querySelector(".from");
       var m = meta(v);
       from.textContent = m;
       from.title = m;
 
-      var w = node.querySelector(".w");
-      w.textContent = v.w;
-      if (sent) w.classList.add("sent");
-
-      node.querySelector(".phon").textContent = v.p ? "/" + v.p + "/" : "";
-      node.querySelector(".tr").textContent = v.t || "";
-      node.querySelector(".foot").textContent = timeAgo(v.d);
+      node.querySelector(".time").textContent = timeAgo(v.d);
 
       list.appendChild(node);
     });
@@ -121,7 +130,7 @@
   list.addEventListener("click", function (e) {
     var b = e.target.closest(".del");
     if (!b) return;
-    var i = +b.closest(".card").dataset.i;
+    var i = +b.closest(".row").dataset.i;
     vocab.splice(i, 1);
     save();
   });

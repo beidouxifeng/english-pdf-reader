@@ -2,17 +2,15 @@
   "use strict";
 
   var sw = document.getElementById("sw");
-  var swlab = document.getElementById("swlab");
-  var swsub = document.getElementById("swsub");
+  var swstate = document.getElementById("swstate");
   var open = document.getElementById("open");
   var cnt = document.getElementById("cnt");
 
   function paint(on) {
     sw.setAttribute("aria-checked", on ? "true" : "false");
-    swlab.textContent = on ? "点击关闭" : "点击开启";
-    swsub.textContent = on
-      ? "总是使用该扩展打开 PDF"
-      : "总是使用原生查看器打开 PDF";
+    swstate.textContent = on
+      ? "用本扩展打开，可划词查词 · 点击关闭"
+      : "用 Chrome 自带查看器打开 · 点击开启";
   }
 
   chrome.storage.local.get("nativeMode").then(function (r) {
@@ -24,7 +22,7 @@
     cnt.textContent = n ? n + " 条" : "空";
   });
 
-  sw.onclick = function () {
+  function toggle() {
     var nowOn = sw.getAttribute("aria-checked") !== "true";
     paint(nowOn);
     chrome.storage.local.set({ nativeMode: !nowOn }).then(function () {
@@ -34,7 +32,9 @@
         }
       });
     });
-  };
+  }
+
+  sw.onclick = toggle;
 
   open.onclick = function () {
     chrome.tabs.create({ url: chrome.runtime.getURL("vocab.html") });

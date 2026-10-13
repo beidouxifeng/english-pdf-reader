@@ -30,21 +30,28 @@
 
 <main>
   <div id="stat" class="stat"></div>
-  <div id="list" class="grid"></div>
+  <div id="head" class="head-row" hidden>
+    <span>类型</span>
+    <span>原文</span>
+    <span>音标</span>
+    <span>释义</span>
+    <span>出处</span>
+    <span>时间</span>
+    <span></span>
+  </div>
+  <div id="list" class="list"></div>
   <div id="empty" class="empty" hidden></div>
 </main>
 
-<template id="card">
-  <article class="card">
+<template id="row">
+  <article class="row">
+    <span class="kind"></span>
+    <span class="w"></span>
+    <span class="phon"></span>
+    <span class="tr"></span>
+    <span class="from"></span>
+    <span class="time"></span>
     <button class="del" title="删除">×</button>
-    <div class="head">
-      <span class="kind"></span>
-      <span class="from"></span>
-    </div>
-    <h2 class="w"></h2>
-    <div class="phon"></div>
-    <p class="tr"></p>
-    <div class="foot"></div>
   </article>
 </template>
 
