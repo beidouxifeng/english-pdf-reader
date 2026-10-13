@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>生词本</title>
+<link rel="stylesheet" href="vocab.css">
+</head>
+<body>
+<header>
+  <h1>生词本</h1>
+  <span class="sp"></span>
+  <div class="tools">
+    <div class="search">
+      <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+        <circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M11 11l3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <input id="q" type="search" placeholder="搜索单词、释义或出处" autocomplete="off">
+    </div>
+    <div class="seg" id="seg">
+      <button data-f="all" class="on">全部</button>
+      <button data-f="word">单词</button>
+      <button data-f="phrase">句子</button>
+    </div>
+    <button id="ex">导出 Excel</button>
+    <button id="all" class="danger">清空</button>
+  </div>
+</header>
+
+<main>
+  <div id="stat" class="stat"></div>
+  <div id="list" class="grid"></div>
+  <div id="empty" class="empty" hidden></div>
+</main>
+
+<template id="card">
+  <article class="card">
+    <button class="del" title="删除">×</button>
+    <div class="head">
+      <span class="kind"></span>
+      <span class="from"></span>
+    </div>
+    <h2 class="w"></h2>
+    <div class="phon"></div>
+    <p class="tr"></p>
+    <div class="foot"></div>
+  </article>
+</template>
+
+<script src="xlsx.js"></script>
+<script src="vocab.js"></script>
+</body>
+</html>

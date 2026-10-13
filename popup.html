@@ -5,6 +5,7 @@
 <style>
   :root {
     --bg: #ffffff;
+    --hover: #f4f5f7;
     --fg: #1f2328;
     --sub: #6b7280;
     --bd: #e2e5ea;
@@ -13,6 +14,7 @@
   @media (prefers-color-scheme: dark) {
     :root {
       --bg: #1f2125;
+      --hover: #292c31;
       --fg: #e6e8ea;
       --sub: #9aa0a6;
       --bd: #3a3d42;
@@ -22,43 +24,53 @@
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    width: 232px;
-    padding: 12px 14px 14px;
+    width: 252px;
+    padding: 12px 14px 6px;
     background: var(--bg);
     color: var(--fg);
     font: 13px/1.5 -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
   }
   .title {
-    font-size: 13px;
-    font-weight: 600;
     margin: 0 0 10px;
+    font-size: 13px;
+    font-weight: 500;
   }
-  .row {
+  .sw {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
+    width: calc(100% + 16px);
+    padding: 6px 8px;
+    margin: 0 -8px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: background .15s;
   }
-  .label { font-size: 13px; }
-  .hint {
-    margin: 8px 0 0;
+  .sw:hover { background: var(--hover); }
+  .sw .lab { font-size: 13px; }
+  .sw .sub {
+    display: block;
+    margin-top: 2px;
     font-size: 11.5px;
-    line-height: 1.55;
+    line-height: 1.5;
     color: var(--sub);
   }
-  .sw {
+  .track {
     position: relative;
     flex: 0 0 auto;
     width: 38px;
     height: 22px;
     border-radius: 11px;
     background: #c8ccd2;
-    border: none;
-    padding: 0;
-    cursor: pointer;
     transition: background .18s;
   }
-  .sw::after {
+  .track::after {
     content: "";
     position: absolute;
     top: 2px;
@@ -70,28 +82,54 @@
     box-shadow: 0 1px 2px rgba(0,0,0,.28);
     transition: transform .18s;
   }
-  .sw[aria-checked="true"] { background: var(--ac); }
-  .sw[aria-checked="true"]::after { transform: translateX(16px); }
-  .sep {
+  .sw[aria-checked="true"] .track { background: var(--ac); }
+  .sw[aria-checked="true"] .track::after { transform: translateX(16px); }
+  hr {
     height: 1px;
-    background: var(--bd);
-    margin: 12px 0;
+    margin: 10px 0 0;
     border: 0;
+    background: var(--bd);
   }
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: calc(100% + 16px);
+    padding: 9px 8px;
+    margin: 0 -8px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .row:hover { background: var(--hover); }
+  .row .cnt { color: var(--sub); }
+  .row .go { color: var(--sub); font-size: 12px; }
 </style>
 </head>
 <body>
   <p class="title">英文PDF阅读器</p>
-  <div class="row">
-    <span class="label">接管 PDF</span>
-    <button id="sw" class="sw" role="switch" aria-checked="true" title="切换"></button>
-  </div>
-  <p class="hint" id="hint"></p>
-  <hr class="sep">
-  <div class="row">
-    <span class="label">生词本</span>
-    <span class="label" id="cnt">—</span>
-  </div>
+
+  <button id="sw" class="sw" role="switch" aria-checked="true">
+    <span>
+      <span class="lab" id="swlab"></span>
+      <span class="sub" id="swsub"></span>
+    </span>
+    <span class="track"></span>
+  </button>
+
+  <hr>
+
+  <button id="open" class="row" title="在新标签页打开生词本">
+    <span>生词本</span>
+    <span><span class="cnt" id="cnt">—</span> <span class="go">↗</span></span>
+  </button>
+
 <script src="popup.js"></script>
 </body>
 </html>

@@ -2,14 +2,17 @@
   "use strict";
 
   var sw = document.getElementById("sw");
-  var hint = document.getElementById("hint");
+  var swlab = document.getElementById("swlab");
+  var swsub = document.getElementById("swsub");
+  var open = document.getElementById("open");
   var cnt = document.getElementById("cnt");
 
   function paint(on) {
     sw.setAttribute("aria-checked", on ? "true" : "false");
-    hint.textContent = on
-      ? "打开 PDF 时由本扩展接管，可划词查词。"
-      : "打开 PDF 时使用 Chrome 自带的查看器，不划词。";
+    swlab.textContent = on ? "点击关闭" : "点击开启";
+    swsub.textContent = on
+      ? "总是使用该扩展打开 PDF"
+      : "总是使用原生查看器打开 PDF";
   }
 
   chrome.storage.local.get("nativeMode").then(function (r) {
@@ -23,15 +26,18 @@
 
   sw.onclick = function () {
     var nowOn = sw.getAttribute("aria-checked") !== "true";
-    var nativeMode = !nowOn;
     paint(nowOn);
-    chrome.storage.local.set({ nativeMode: nativeMode }).then(function () {
+    chrome.storage.local.set({ nativeMode: !nowOn }).then(function () {
       chrome.tabs.query({}, function (tabs) {
         for (var i = 0; i < tabs.length; i++) {
-          var u = tabs[i].url || "";
-          if (u.indexOf("viewer.html") > -1) chrome.tabs.reload(tabs[i].id);
+          if ((tabs[i].url || "").indexOf("viewer.html") > -1) chrome.tabs.reload(tabs[i].id);
         }
       });
     });
+  };
+
+  open.onclick = function () {
+    chrome.tabs.create({ url: chrome.runtime.getURL("vocab.html") });
+    window.close();
   };
 })();
