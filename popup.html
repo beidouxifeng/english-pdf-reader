@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1f2328;
+    --sub: #6b7280;
+    --bd: #e2e5ea;
+    --ac: #2563eb;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1f2125;
+      --fg: #e6e8ea;
+      --sub: #9aa0a6;
+      --bd: #3a3d42;
+      --ac: #5b93f7;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    width: 232px;
+    padding: 12px 14px 14px;
+    background: var(--bg);
+    color: var(--fg);
+    font: 13px/1.5 -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+  }
+  .title {
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0 0 10px;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .label { font-size: 13px; }
+  .hint {
+    margin: 8px 0 0;
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: var(--sub);
+  }
+  .sw {
+    position: relative;
+    flex: 0 0 auto;
+    width: 38px;
+    height: 22px;
+    border-radius: 11px;
+    background: #c8ccd2;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background .18s;
+  }
+  .sw::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0,0,0,.28);
+    transition: transform .18s;
+  }
+  .sw[aria-checked="true"] { background: var(--ac); }
+  .sw[aria-checked="true"]::after { transform: translateX(16px); }
+  .sep {
+    height: 1px;
+    background: var(--bd);
+    margin: 12px 0;
+    border: 0;
+  }
+</style>
+</head>
+<body>
+  <p class="title">英文PDF阅读器</p>
+  <div class="row">
+    <span class="label">接管 PDF</span>
+    <button id="sw" class="sw" role="switch" aria-checked="true" title="切换"></button>
+  </div>
+  <p class="hint" id="hint"></p>
+  <hr class="sep">
+  <div class="row">
+    <span class="label">生词本</span>
+    <span class="label" id="cnt">—</span>
+  </div>
+<script src="popup.js"></script>
+</body>
+</html>

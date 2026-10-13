@@ -572,10 +572,17 @@ side.addEventListener("mouseenter", function () { clearTimeout(sideTimer); });
 side.addEventListener("mouseleave", closeSide);
 $("ex").onclick = exportXLSX;
 $("nat").onclick = function () {
-  try {
-    chrome.mimeHandler.abortAndFallbackToNativeHandler();
-  } catch (e) {
-    alert("切换失败:" + (e && e.message ? e.message : e));
+  var go = function () {
+    try {
+      chrome.mimeHandler.abortAndFallbackToNativeHandler();
+    } catch (e) {
+      alert("切换失败:" + (e && e.message ? e.message : e));
+    }
+  };
+  if (chrome.storage && chrome.storage.local) {
+    chrome.storage.local.set({ nativeMode: true }).then(go, go);
+  } else {
+    go();
   }
 };
 
@@ -584,6 +591,15 @@ $("nat").onclick = function () {
     if (typeof chrome === "undefined" || !chrome.mimeHandler) {
       $("empty").textContent = "需要在 Chrome 中作为扩展使用";
       return;
+    }
+    if (chrome.storage && chrome.storage.local) {
+      try {
+        var pref = await chrome.storage.local.get("nativeMode");
+        if (pref && pref.nativeMode) {
+          chrome.mimeHandler.abortAndFallbackToNativeHandler();
+          return;
+        }
+      } catch (e) {}
     }
     var info = await chrome.mimeHandler.getStreamInfo();
     var name = "";

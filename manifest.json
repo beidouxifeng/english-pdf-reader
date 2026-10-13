@@ -3,7 +3,9 @@
   "name": "英文PDF阅读器",
   "version": "1.0.0",
   "description": "在 PDF 上划词查词并记录生词,内置离线英汉词典",
-  "action": {},
+  "action": {
+    "default_popup": "popup.html"
+  },
   "mime_types_handler": {
     "application/pdf": {
       "handler_url": "viewer.html",
